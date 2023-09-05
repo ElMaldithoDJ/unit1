@@ -85,17 +85,15 @@ export class GridComponent implements OnInit, OnChanges, AfterViewInit, OnDestro
   }
 
   get getGutter(): [number | null, number | null] {
-    const result: [number | null, number | null] = null;
-    const gutter = (this.gutter !== null)? this.gutter : 0;
+    const result: [number | null, number | null] = [null, null];
+    const gutter = this.gutter || 0;
     const normalizedGutter = Array.isArray(gutter) ? gutter : [gutter, null];
     normalizedGutter.forEach((g, index) => {
       if (typeof g === 'object' && g !== null) {
         result[index] = null;
         Object.keys(gridResponsiveMap).map((screen: string) => {
           const bp = <BreakpointKey>screen;
-          if (
-            this.mediaMatcher.matchMedia(gridResponsiveMap[bp]).matches && g[bp]
-          ) {
+          if (this.mediaMatcher.matchMedia(gridResponsiveMap[bp]).matches && g[bp]) {
             result[index] = <number>g![bp];
           }
         });
@@ -110,7 +108,7 @@ export class GridComponent implements OnInit, OnChanges, AfterViewInit, OnDestro
     const [horizontalGutter, verticalGutter] = this.getGutter;
     this.actualGutter$.next([horizontalGutter, verticalGutter]);
     const renderGutter = (name: string, gutter: number | null): void => {
-      if (gutter === null) {
+      if (gutter !== null) {
         this.renderer.setStyle(this.element, name, `-${gutter / 2}px`);
       }
     };
