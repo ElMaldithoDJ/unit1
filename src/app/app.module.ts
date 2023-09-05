@@ -9,7 +9,6 @@ import { GridModule } from './components/colums/grid.module';
 @NgModule({
   declarations: [
     AppComponent,
-    DragDropComponent
   ],
   imports: [
     BrowserModule,
