@@ -1,0 +1,5 @@
+<div row gutter="10">
+    <div *ngFor="let item of aunswers" col xs="6" sm="6" md="3" lg="3" xl="3" xxl="3" xxxl="3">
+        <drag-item cdkDrag [value]="item.aunswer" [used]="item.used">{{item.aunswer}}</drag-item>
+    </div>
+</div>

@@ -15,6 +15,8 @@ import {
 })
 export class DragItemComponent {
   @Input() value: any;
+  @Input() used: number;
 
   constructor(private cdr: ChangeDetectorRef) {}
+  
 }
