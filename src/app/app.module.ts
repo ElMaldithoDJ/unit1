@@ -3,8 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DragDropComponent } from './components/drag-drop/drag-drop.component';
-import { GridModule } from './components/colums/grid.module';
+import { GridModule } from './components/grid/grid.module';
+import { DragDropAunserModule } from './components/drag-drop/drag-drop.module';
 
 @NgModule({
   declarations: [
@@ -13,7 +13,8 @@ import { GridModule } from './components/colums/grid.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    GridModule
+    GridModule,
+    DragDropAunserModule
   ],
   providers: [],
   bootstrap: [AppComponent]
