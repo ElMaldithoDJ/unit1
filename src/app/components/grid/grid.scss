@@ -8,7 +8,7 @@ $breakPoints: (
   lg: 992px,
   xl: 1200px,
   xxl: 1400px,
-  xxxl: 1600px,
+  x2k: 1600px,
   x4k: 2560px,
 );
 
@@ -32,10 +32,17 @@ $breakPoints: (
   $num: calc($size / $columns);
   margin-right: if($num == 0, 0, calc(($num * 100) * 1%));
 }
-
+@mixin make-offset($size, $columns: $cols) {
+  $num: calc($size / $columns);
+  margin-top: if($num == 0, 0, calc(($num * 100) * 1%));
+}
+@mixin make-pull($size, $columns: $cols) {
+  $num: calc($size / $columns);
+  margin-bottom: if($num == 0, 0, calc(($num * 100) * 1%));
+}
 @mixin cols($bkp, $colums, $prefix) {
   @each $name, $bk in $bkp {
-    @media (width <= $bk) {
+    @media (min-width: $bk) {
       @for $i from 0 to $colums + 1 {
         @if $i == 0 {
           .#{$prefix}-#{$name}-0 {
@@ -45,6 +52,11 @@ $breakPoints: (
           .#{$prefix}-#{$name}-#{$i} {
             width: calc(($i * 100) / $colums * 1%);
             display: block;
+            transition: width .3s ease;
+          }
+          .#{$prefix}-flex-#{$name}-#{$i} {
+            display: flex;
+            width: calc(($i * 100) / $colums * 1%);
             transition: width .3s ease;
           }
         }

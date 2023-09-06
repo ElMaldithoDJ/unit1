@@ -1,7 +1,20 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output, ViewEncapsulation, forwardRef } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewEncapsulation,
+  forwardRef,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ICuestion } from './models/data.model';
+import { IAunswer, ICuestion } from './models/data.model';
 import { Subject } from 'rxjs';
+import { shuffleItems } from './util/shuffle';
 
 @Component({
   selector: 'drag-drop-aunswer',
@@ -12,12 +25,14 @@ import { Subject } from 'rxjs';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => DragDropComponent),
-      multi: true
-    }
+      multi: true,
+    },
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DragDropComponent implements ControlValueAccessor, AfterViewInit, OnDestroy {
+export class DragDropComponent
+  implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy
+{
   @Input() value: any;
   @Output() valueChange: EventEmitter<any> = new EventEmitter();
   @Input() disabled: boolean = false;
@@ -30,29 +45,60 @@ export class DragDropComponent implements ControlValueAccessor, AfterViewInit, O
       cuestion: '¿Cual es la capital de Rep. Domicana?',
       correct: false,
       correct_aunswer: 'Santo Domingo',
+      date: 1960,
       aunswer: '',
-      used: 0
+      used: 0,
+      active: true,
     },
     {
       cuestion: '¿Cuantos anños tienes?',
       correct: false,
       correct_aunswer: '20',
+      date: 1980,
       aunswer: '',
-      used: 0
+      used: 0,
+      active: false,
+    },
+    {
+      cuestion: '¿Cuantos anños tienes?',
+      correct: false,
+      correct_aunswer: '20',
+      date: 1990,
+      aunswer: '',
+      used: 0,
+      active: false,
+    },
+    {
+      cuestion: '¿Cuantos anños tienes?',
+      correct: false,
+      correct_aunswer: '20',
+      date: 1994,
+      aunswer: '',
+      used: 0,
+      active: false,
+    },
+    {
+      cuestion: '¿Cuantos anños tienes?',
+      correct: false,
+      correct_aunswer: '20',
+      date: 1998,
+      aunswer: '',
+      used: 0,
+      active: false,
     },
   ];
 
   onChangeCb: Function = (value?: any) => void 0;
   onTouchCb: Function = () => void 0;
-  
-  constructor(
-    private cdr: ChangeDetectorRef,
-  ) {}
+
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  ngOnInit(): void {
+  }
 
   ngAfterViewInit(): void {
-
   }
-  
+
   writeValue(obj: any): void {
     this.value = obj;
     this.valueChange.emit(this.value);
@@ -75,7 +121,7 @@ export class DragDropComponent implements ControlValueAccessor, AfterViewInit, O
   }
 
   sendValue(): void {
-    const correct: number = this.cuestions.filter(item => item.correct === true).length * .5;
+    const correct: number = this.cuestions.filter((item) => item.correct === true).length * 0.5;
     this.value = parseInt(`${correct}`, 10);
     this.valueChange.emit(this.value);
     this.onChangeCb(this.value);
@@ -86,5 +132,4 @@ export class DragDropComponent implements ControlValueAccessor, AfterViewInit, O
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }

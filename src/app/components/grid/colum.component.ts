@@ -25,7 +25,7 @@ export class ColumComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
   @Input() lg: string | number | EmbeddedProperty | null = null;
   @Input() xl: string | number | EmbeddedProperty | null = null;
   @Input() xxl: string | number | EmbeddedProperty | null = null;
-  @Input() xxxl: string | number | EmbeddedProperty | null = null;
+  @Input() x2k: string | number | EmbeddedProperty | null = null;
   @Input() x4k: string | number | EmbeddedProperty | null = null;
 
 
@@ -71,7 +71,7 @@ export class ColumComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
   }
 
   get generateColumClass(): object {
-    const  listOfSize: Array<keyof ColumComponent> = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl', 'xxxl', 'x4k'];
+    const  listOfSize: Array<keyof ColumComponent> = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl', 'x2k', 'x4k'];
     const listOfClass: ClassInterface = {};
     listOfSize.forEach((name) => {
       if(isNotNil(this[name])) {

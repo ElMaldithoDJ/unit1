@@ -1,43 +1,47 @@
-import { Component, Host, ViewEncapsulation } from '@angular/core';
-import { DragDropComponent } from '../drag-drop.component';
-import { IAunswer, ICuestion } from '../models/data.model';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Host,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
+import { ICuestion } from '../models/data.model';
 import { shuffleItems } from '../util/shuffle';
+import { DragDropComponent } from '../drag-drop.component';
+import { CdkDrag, CdkDragEnd } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'drag-list',
   templateUrl: './drag-list.html',
   styleUrls: ['./drag-list.scss'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DragListComponent {
-  constructor(@Host() private dragDropParent: DragDropComponent) {}
+export class DragListComponent implements OnInit {
+  aunswers: ICuestion[] = [];
 
-  get cuestions(): ICuestion[] {
-    return this.dragDropParent.cuestions;
+  constructor(
+    private cdr: ChangeDetectorRef,
+    @Host() private dragHost: DragDropComponent
+  ) {}
+
+  ngOnInit(): void {
+    this.setAunswers();
   }
 
-  get aunswers(): IAunswer[] {
-    let _aunsers: IAunswer[] = [];
-    this.cuestions.forEach((item: ICuestion, index: number) => {
-      _aunsers = [
-        ..._aunsers,
-        {
-          aunswer: item.correct_aunswer,
-          used: this.responseTimes[index],
-        },
-      ];
-    });
-    return shuffleItems(_aunsers);
+  onDragEnd(event: CdkDragEnd<HTMLElement>): void {
+    event.source.reset();
+    event.source.element.nativeElement.classList.add('cdk-drag-stop');
+    setTimeout(() => {
+      event.source.element.nativeElement.classList.remove('cdk-drag-stop');
+    }, 550);
+    this.cdr.markForCheck();
   }
 
-  get responseTimes(): number[] {
-    let times: number[] = [];
-    for (let i = 0; i < this.aunswers.length; i++) {
-      times = [
-        ...times,
-        this.cuestions.filter((item) => item.aunswer === this.aunswers[i]).length,
-      ];
-    }
-    return times;
+  setAunswers(): void {
+    let content = this.dragHost.cuestions.slice();
+    this.aunswers = shuffleItems(content);
+    this.cdr.markForCheck();
   }
 }

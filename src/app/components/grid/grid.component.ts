@@ -49,10 +49,6 @@ export class GridComponent implements OnInit, OnChanges, AfterViewInit, OnDestro
 
   private readonly destroy$: Subject<void> = new Subject();
 
-  private element(): HTMLElement {
-    return this.elementRef.nativeElement;
-  }
-
   constructor(
     public elementRef: ElementRef<HTMLElement>,
     public renderer: Renderer2,
@@ -61,6 +57,10 @@ export class GridComponent implements OnInit, OnChanges, AfterViewInit, OnDestro
     public platform: Platform,
     private breakPointService: GridService
   ) {}
+
+  private get element(): HTMLElement {
+    return this.elementRef.nativeElement;
+  }
 
   ngOnInit(): void {
     this.setGutterStyle();
@@ -107,15 +107,9 @@ export class GridComponent implements OnInit, OnChanges, AfterViewInit, OnDestro
   setGutterStyle(): void {
     const [horizontalGutter, verticalGutter] = this.getGutter;
     this.actualGutter$.next([horizontalGutter, verticalGutter]);
-    const renderGutter = (name: string, gutter: number | null): void => {
-      if (gutter !== null) {
-        this.renderer.setStyle(this.element, name, `-${gutter / 2}px`);
-      }
-    };
-    renderGutter('margin-left', horizontalGutter);
-    renderGutter('margin-right', horizontalGutter);
-    renderGutter('margin-top', verticalGutter);
-    renderGutter('margin-bottom', verticalGutter);
+    if(this.gutter !== null) {
+      this.renderer.setStyle(this.element, 'gap', this.gutter)
+    }
   }
 
   ngOnDestroy(): void {

@@ -1,0 +1,25 @@
+@import "../theme/theme.scss";
+// droplist style
+.drop-list {
+  display: flex;
+  gap: 5px;
+  padding: 10px;
+  flex-flow: row wrap;
+  transform: .3s ease;
+  .drop-item {
+    padding: 8px 14px;
+    background-color: $btnDefaultBackground;
+    color: $btnDefaultColor;
+    border-radius: 10px;
+    transition: 0.3s ease;
+    cursor: pointer;
+    font-size: 16px;
+    &.active {
+      background-color: $btnActiveBackground;
+      color: $btnActiveColor;
+    }
+  }
+}
+.spacing-container {
+  height: 256px;
+}

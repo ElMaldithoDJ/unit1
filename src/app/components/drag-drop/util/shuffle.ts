@@ -1,11 +1,8 @@
-import { IAunswer } from '../models/data.model';
-
-export function shuffleItems(array: IAunswer[]): IAunswer[] {
-  const newArray = array.slice();
-  newArray.sort(ramdomizer);
-  return newArray;
+export const shuffleItems = <ICuestion>(array: ICuestion[]): ICuestion[] => {
+  let x:ICuestion[] = array;
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return x;
 }
-
-const ramdomizer = (): number => {
-  return Math.random() - 0.5;
-};

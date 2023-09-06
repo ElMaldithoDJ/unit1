@@ -1,12 +1,17 @@
 <div row>
-  <div col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12" xxxl="12">
-    <h1>{{activityTitle}}</h1>
-  </div>
-  <div col col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12" xxxl="12">
-    <div row>
-      <div col xs="6" sm="6" md="4" lg="4" xl="3" xxl="3" xxxl="3" x4k="3">x</div>
-      <div col xs="6" sm="6" md="4" lg="4" xl="3" xxl="3" xxxl="3" x4k="3">x</div>
-      <div col xs="6" sm="6" md="4" lg="4" xl="3" xxl="3" xxxl="3" x4k="3">x</div>
+  <div col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12" x2k="12" x4k="12">
+    <div class="drop-panel">
+      <div class="drop-area">
+        <ul class="drop-list">
+          <li class="drop-item" [class.active]="el.active" *ngFor="let el of cuestions; let i = index" [attr.index]="i">{{el.date}}</li>
+        </ul>
+      </div>
     </div>
+  </div>
+  <div col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12" x2k="12" x4k="12">
+    <div class="spacing-container"></div>
+  </div>
+  <div col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12" x2k="12" x4k="12">
+    <drag-list></drag-list>
   </div>
 </div>

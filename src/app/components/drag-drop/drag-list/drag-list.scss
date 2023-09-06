@@ -1,0 +1,29 @@
+@import "../../theme/theme.scss";
+// Draglist Style
+.drag-card-item {
+  display: flex;
+  justify-content: stretch;
+  align-items: center;
+  padding: 14px 12px;
+  box-shadow: $dragElementShadow;
+  border-radius: 10px;
+  background-color: white;
+  transition: box-shadow .5s ease;
+  cursor: all-scroll;
+  .drag-badge {
+    padding: 0 10px;
+  }
+  .drag-title {
+    flex: auto;
+    font-size: 14px;
+  }
+  .drag-icon {
+    font-size: 18px;
+  }
+  &.cdk-drag-dragging {
+    box-shadow: $cardShadow;
+  }
+  &.cdk-drag-stop {
+    transition: transform .5s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+}

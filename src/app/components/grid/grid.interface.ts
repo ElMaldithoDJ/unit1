@@ -1,3 +1,5 @@
+import { Renderer2 } from "@angular/core";
+
 export enum BreakpointEnum {
   xxl = 'xxl',
   xl = 'xl',
