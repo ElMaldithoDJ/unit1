@@ -1,17 +1,55 @@
 <div row>
   <div col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12" x2k="12" x4k="12">
-    <div class="drop-panel">
-      <div class="drop-area">
-        <ul class="drop-list">
-          <li class="drop-item" [class.active]="el.active" *ngFor="let el of cuestions; let i = index" [attr.index]="i">{{el.date}}</li>
-        </ul>
+    <div class="container">
+      <div row [gutter]="[10, 10]">
+        <div class="drop-area">
+          <ul row class="drop-years">
+            <li col xs="6" sm="6" md="1" lg="1" xl="1" xxl="2" x2k="1" x4k="1" class="years" *ngFor="let item of cuestions">{{item.date}}</li>
+          </ul>
+          <ul row class="drop-years" cdkDropList #dropZone="cdkDropList"
+          [cdkDropListData]="aunswers" [cdkDropListConnectedTo]="[dragZone]"
+          (cdkDropListDropped)="onDrop($event)" (cdkDropListEntered)="dragEnter()" (cdkDropListExited)="onDragEnd()" cdkDropListOrientation="horizontal">
+            <ng-container *ngIf="aunswers.length === 0; else aunswerEvents">
+              <div flex col sm="12" xs="12" md="12" lg="12" xl="12" xxl="12" x2k="12" x4k="12">
+                <h3>Arroge su respuesta</h3>
+              </div>
+            </ng-container>
+            <ng-template #aunswerEvents>
+              <li cdkDrag col xs="6" sm="6" md="1" lg="1" xl="1" xxl="2" x2k="1" x4k="1" class="years" *ngFor="let item of aunswers"
+              [cdkDragData]="item" [innerHTML]="item"></li>
+            </ng-template>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
   <div col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12" x2k="12" x4k="12">
-    <div class="spacing-container"></div>
+    <div class="spacing-container">
+    </div>
   </div>
   <div col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12" x2k="12" x4k="12">
-    <drag-list></drag-list>
+    <div class="drag-panel">
+      <div class="drag-area">
+        <div class="container">
+          <div row [gutter]="[0, 10]" #dragZone="cdkDropList" cdkDropList [cdkDropListConnectedTo]="[dropZone]"
+          [cdkDropListData]="aunswersOpts"
+          (cdkDropListDropped)="onDrop($event)" cdkDropListOrientation="horizontal">
+            <div *ngFor="let item of aunswersOpts; let x = index" col xs="6" sm="6" md="3" lg="3" xl="3" xxl="3" x2k="3" x4k="3">
+              <div class="drag-card-item" cdkDrag [cdkDragData]="item">
+                <div class="drag-badge"></div>
+                <div class="drag-title">{{ item }}</div>
+                <div class="drag-icon">
+                  <i class="bi bi-grip-vertical"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display: flex; padding: 20px 30px;" col xs="12" sm="12" md="12" lg="12" xl="12" xxl="12" x2k="12" x4k="12">
+    <div class="spacer"></div>
+    <button class="btn-next" (click)="setCalification()">Finalizar</button>
   </div>
 </div>
