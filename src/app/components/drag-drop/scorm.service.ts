@@ -6,10 +6,14 @@ export class ScormService {
 
   constructor(
     private scorm: ScormApiWrapper
-  ) {}
+  ) {
+    this.scorm.initialize();
+    this.scorm.dataSet('cmi.core.score.min', '0');
+    this.scorm.dataSet('cmi.core.score.max', '5');
+  }
 
   setScore(data: string): void {
-    this.scorm.getApi()
+    this.scorm.dataSet('cmi.core.score.raw', data);
   }
 
 }
