@@ -27,6 +27,7 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
+import { ScormService } from './scorm.service';
 
 @Component({
   selector: 'drag-drop-aunswer',
@@ -42,8 +43,7 @@ import {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DragDropComponent implements OnInit, AfterViewInit, OnDestroy
-{
+export class DragDropComponent implements OnInit, OnDestroy {
   @Input() value: any;
   @Output() valueChange: EventEmitter<any> = new EventEmitter();
   @Input() disabled: boolean = false;
@@ -98,17 +98,17 @@ export class DragDropComponent implements OnInit, AfterViewInit, OnDestroy
   aunswersOpts: string[] = [];
   aunswers: string[] = [];
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private scormService: ScormService
+  ) {}
 
   ngOnInit(): void {
     this.setAunswersOpts();
   }
 
-  ngAfterViewInit(): void {}
-
   onDrag(event: DragEvent): void {
     event.preventDefault();
-    
   }
 
   dragStart(event: DragEvent): void {
@@ -135,9 +135,13 @@ export class DragDropComponent implements OnInit, AfterViewInit, OnDestroy
 
   onDrop(event: CdkDragDrop<string[]>): void {
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
     } else {
-      const id = this.aunswersOpts.findIndex(a => a === event.item.data);
+      const id = this.aunswersOpts.findIndex((a) => a === event.item.data);
       this.aunswers = [...this.aunswers, event.item.data];
       this.aunswersOpts.splice(id, 1);
       this.cdr.markForCheck();
@@ -145,23 +149,23 @@ export class DragDropComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   setAunswersOpts(): void {
-    const cuestions = this.cuestions.slice().map(x => x.correct_aunswer);
+    const cuestions = this.cuestions.slice().map((x) => x.correct_aunswer);
     this.aunswersOpts = shuffleItems(cuestions);
     this.cdr.markForCheck();
   }
 
-
   setCalification(): void {
     let c: boolean[] = [];
-    for(let x = 0; x < this.cuestions.length; x++) {
-      c = [...c, (this.cuestions[x].correct_aunswer === this.aunswers[x])];
+    for (let x = 0; x < this.cuestions.length; x++) {
+      c = [...c, this.cuestions[x].correct_aunswer === this.aunswers[x]];
     }
-    const cx = (c.filter(i => i === true).length * .5);
-    console.log(cx);
+    const cx = c.filter((i) => i === true).length * 0.5;
+    this.scormService.setScore(cx);
     this.cdr.markForCheck();
   }
 
   ngOnDestroy(): void {
+    this.scormService.stopScorm();
     this.destroy$.next();
     this.destroy$.complete();
   }
